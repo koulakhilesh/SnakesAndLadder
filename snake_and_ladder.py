@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set_theme()
 
-class snake_n_ladder:
+class snake_n_ladder():
     
     def __init__(self,player_num=2, epoch_plays_num=3,iteration_plays_num=10):
         
@@ -23,7 +23,7 @@ class snake_n_ladder:
         self.epoch_plays_num = epoch_plays_num
         self.iteration_plays_num= iteration_plays_num
         
-        print("\n"+str(self.player_num) + " player game, playing for "+str(self.epoch_plays_num) + " epochs and " +str(self.iteration_plays_num) + " iterations per epoch")
+        # print("\n"+str(self.player_num) + " player game, playing for "+str(self.epoch_plays_num) + " epochs and " +str(self.iteration_plays_num) + " iterations per epoch")
       
         
     def reset_game(self):
@@ -165,24 +165,29 @@ class snake_n_ladder:
                 total_score+=len(epoch_plays[k][l])
                 
         
-        print("\nAverage number of round plays to finish the "+str(self.player_num) + " player game in " + str(epoch_plays_num) +" epochs = " +str(total_score/total_iteration))
+        # print("\nAverage number of round plays to finish the "+str(self.player_num) + " player game in " + str(epoch_plays_num) +" epochs = " +str(total_score/total_iteration))
         
         return total_score/total_iteration,self.win_prob/(self.epoch_plays_num *self.iteration_plays_num)
 
 
-
-player_list=np.arange(1,10)
-avg_rounds_list=[]
-player_win_prob=[]
-for player in tqdm(player_list):
-    game=snake_n_ladder(player_num=player, epoch_plays_num=10,iteration_plays_num=100000)
-    avg_round,win_prob=game.play_god()
-    avg_rounds_list.append(avg_round)
-    player_win_prob.append(win_prob)
-    # print("\nWinning probabilty = "+str(win_prob))
-
-plt.plot(player_list,avg_rounds_list)
-plt.ylim(0,50)
-plt.show()
+if __name__ == '__main__':
+    player_list=np.arange(1,10)
+    avg_rounds_list=[]
+    player_win_prob=[]
+    epoch_plays_num=10
+    iteration_plays_num=1000
+    for player in tqdm(player_list):
+        game=snake_n_ladder(player_num=player, epoch_plays_num=epoch_plays_num,iteration_plays_num=iteration_plays_num)
+        avg_round,win_prob=game.play_god()
+        avg_rounds_list.append(avg_round)
+        player_win_prob.append(win_prob)
+        # print("\nWinning probabilty = "+str(win_prob))
+    plt.plot(player_list,avg_rounds_list)
+    plt.xlabel('Number of Players')
+    plt.ylabel('Average number of round plays')
+    plt.title('Average number of round plays to finish the game with '+str(player_list[-1]+1) +' players and '+str(epoch_plays_num*iteration_plays_num)+ ' respective simulation')
+    plt.ylim(0,50)
+    plt.show()
+ 
 
 
